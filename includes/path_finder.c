@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 15:34:37 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/25 17:11:25 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/25 17:56:53 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char	**ft_path_finder(char **envp)
 	char	*start_removed;
 	char	**paths;
 	int		n;
-//	int		i;
+	int		i;
+	char	*temp;
 
 	index = ft_path_index(envp);
 	start_removed = ft_substr(envp[index], 5, ft_strlen(envp[index]));
@@ -40,13 +41,35 @@ char	**ft_path_finder(char **envp)
 	n = 0;
 	while (paths[n])
 	{
+		temp = paths[n];
 		paths[n] = ft_strjoin(paths[n], "/");
+		free (temp);
 		n++;
 	}
 	free (start_removed);
-	return (paths);
 	/*for (i = 0; paths[i]; i++)
 	{
 		ft_printf("%s\n", paths[i]);
 	}*/
+	return (paths);
 }
+
+char	*ft_path_validator(char **envp, char *cmd)
+{
+	char	*verified_path;
+	char	**paths;
+	int		n;
+
+	paths = ft_path_finder(envp);
+	n = 0;
+	while (paths[n])
+	{
+		verified_path = ft_strjoin(paths[n], cmd);
+		if (access(verified_path, F_OK | X_OK) == 0)
+			return (verified_path);
+		free (verified_path);
+		n++;
+	}
+	//Add function here to free all paths in case it is not found.
+	return (NULL);
+}	

@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 15:35:28 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/25 17:12:10 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:01:23 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	ft_path_finder(envp);
+	char	*command[3] = {"ls", "-la", NULL};
+
+	execve(ft_path_validator(envp, "ls"), command, envp);
 	//i = ft_path_index(envp);
 	//ft_printf("%s", envp[i]);
 	return (0);

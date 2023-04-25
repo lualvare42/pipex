@@ -40,7 +40,7 @@ $(LIBFT.A) :
 	@echo "libft functions compiled!"
 
 $(NAME) :	${SRC} ${LIBFT.A}
-	${CC} ${SRC} ${LIBFT_PATH}${LIBFT.A} ${FTPRINTF.A}
+	${CC} ${SRC} ${LIBFT_PATH}${LIBFT.A} ${FTPRINTF.A} ${SANITIZE}
 
 #Clean norm to delete all OBJECTS (o.files)
 clean:	
