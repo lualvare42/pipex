@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 15:34:37 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/26 17:55:00 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:23:39 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ char	*ft_path_validator(char **envp, char *cmd)
 		{
 			ft_free_doubleptr(paths);
 			return (verified_path);
+			//verified_path still needs to be free somewhere
 		}
 		free (verified_path);
 		n++;
