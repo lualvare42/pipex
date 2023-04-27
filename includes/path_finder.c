@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 15:34:37 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/25 17:56:53 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:55:00 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,13 @@ char	*ft_path_validator(char **envp, char *cmd)
 	{
 		verified_path = ft_strjoin(paths[n], cmd);
 		if (access(verified_path, F_OK | X_OK) == 0)
+		{
+			ft_free_doubleptr(paths);
 			return (verified_path);
+		}
 		free (verified_path);
 		n++;
 	}
-	//Add function here to free all paths in case it is not found.
+	ft_free_doubleptr(paths);
 	return (NULL);
 }	

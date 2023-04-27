@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:01:36 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/24 18:21:59 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:23:32 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	**ft_split(char const *s, char c)
 		strings[n] = ft_strings(s, c, &k);
 		if (strings[n] == NULL)
 		{
-			ft_free(strings, n);
+			ft_free_doubleptr(strings);
 			return (NULL);
 		}
 		n++;

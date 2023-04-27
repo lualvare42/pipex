@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_free_doubleptr.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/25 15:29:00 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/26 18:20:00 by lualvare         ###   ########.fr       */
+/*   Created: 2023/04/25 18:07:50 by lualvare          #+#    #+#             */
+/*   Updated: 2023/04/25 18:20:43 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include "libft/libft.h"
-# include "libft/ft_printf/ft_printf.h"
+#include "libft.h"
 
-char	*ft_path_validator(char **envp, char *cmd);
-char	**ft_path_finder(char **envp);
-int		ft_input_check(int argc, char **argv);
+void	ft_free_doubleptr(char **ptr)
+{
+	int	n;
 
-#endif
+	n = 0;
+	while (ptr[n])
+	{
+		free(ptr[n]);
+		n++;
+	}
+	free(ptr);
+}

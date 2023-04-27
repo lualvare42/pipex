@@ -20,7 +20,7 @@ SRC 		= 	ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isascii.c ft_isalnum.c \
 				ft_strtrim.c ft_split.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c \
 				ft_putnbr_fd.c ft_itoa.c ft_strmapi.c ft_striteri.c\
 				ft_isspace.c ft_sign.c ft_int.c ft_digitdup_check.c ft_int_check.c ft_isint.c ft_atoi_index.c \
-				ft_dup_inarray.c ft_latoi_index.c ft_abs.c ft_abs_greater.c ft_abs_less.c 
+				ft_dup_inarray.c ft_latoi_index.c ft_abs.c ft_abs_greater.c ft_abs_less.c ft_free_doubleptr.c \
 
 CHL			=	$(wildcard ${CHL_PATH}*.c)
 
