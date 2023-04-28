@@ -6,19 +6,21 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:30:23 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/27 21:02:52 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/28 17:42:56 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-int	forker(char *raw_cmd, pid_t *pid, char **envp, int *n)
+int	forker(char **argv, pid_t *pid, char **envp, int *n)
 {
+	int		cmd_index;
 	char	**cmd;
 	char	*path;
 
 	*n = *n + 1;
-	cmd = ft_split(raw_cmd, ' ');
+	cmd_index = *pid;
+	cmd = ft_split(argv[cmd_index], ' ');
 	path = ft_path_validator(envp, cmd[0]);
 	if (path != NULL)
 	{
@@ -44,11 +46,11 @@ pid_t	*pid_array(int argc)
 
 	number_of_cmd = argc - 3;
 	pid_array = (pid_t *) malloc(sizeof(pid_t) * number_of_cmd);
-	if (pid_array == NULL)
+	if (pid_array == 0)
 		return (0);
 	while (number_of_cmd > 0)
 	{
-		pid_array[number_of_cmd - 1] = 0;
+		pid_array[number_of_cmd - 1] = number_of_cmd + 1;
 		number_of_cmd--;
 	}
 	return (pid_array);
@@ -64,11 +66,12 @@ int	fork_maker(int argc, char **argv, char **envp)
 	n = 0;
 	error_handle = 0;
 	pid1 = pid_array(argc);
-	if (pid1 == NULL)
+	if (pid1 == 0)
 		return (-1);
+	//ft_printf("pid[0] = %d\n pid[1] = %d\n", pid1[0], pid1[1]);
 	while (n < (argc - 3))
 	{
-		forker(argv[2 + n], &pid1[n], envp, &error_handle);
+		forker(argv, &pid1[n], envp, &error_handle);
 		waitpid(pid1[n], &status, 0);
 		if (error_handle == -1)
 			return (-1);
