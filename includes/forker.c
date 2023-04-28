@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:30:23 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/27 21:02:52 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/28 16:51:03 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ pid_t	*pid_array(int argc)
 	return (pid_array);
 }
 
-int	fork_maker(int argc, char **argv, char **envp)
+int	fork_maker(int argc, char **argv, char **envp, int *rd_wr)
 {
 	pid_t	*pid1;
 	int		n;
@@ -63,6 +63,8 @@ int	fork_maker(int argc, char **argv, char **envp)
 
 	n = 0;
 	error_handle = 0;
+	if (pipe(rd_wr) == -1)
+		return (-1);
 	pid1 = pid_array(argc);
 	if (pid1 == NULL)
 		return (-1);
@@ -78,6 +80,13 @@ int	fork_maker(int argc, char **argv, char **envp)
 	return (0);
 }
 
+int	piper(int argc, char **argv, char **envp)
+{
+	int	fd[2];
+
+	pipe(fd);
+	fork_maker(argc, argv, envp, rd_wr);
+}
 /*
 void	fork_maker(int argc, char **argv, char **envp)
 {
