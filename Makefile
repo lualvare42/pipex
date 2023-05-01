@@ -24,7 +24,7 @@ SRC = pipex.c $(wildcard ${I}*.c)
 
 # Compilation instructions
 CFLAGS = -Wall -Wextra -Werror
-CC = cc -g -o pipex.out
+CC = cc -g -o pipex
 AR = ar -rcs
 RM = rm -f
 

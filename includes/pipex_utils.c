@@ -6,11 +6,28 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 12:28:12 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 13:18:51 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:07:52 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
+
+pid_t	*pid_array(int argc)
+{
+	int		number_of_cmd;
+	pid_t	*pid_array;
+
+	number_of_cmd = argc - 3;
+	pid_array = (pid_t *) malloc(sizeof(pid_t) * number_of_cmd);
+	if (pid_array == 0)
+		return (0);
+	while (number_of_cmd > 0)
+	{
+		pid_array[number_of_cmd - 1] = number_of_cmd + 1;
+		number_of_cmd--;
+	}
+	return (pid_array);
+}
 
 /** Explanation here
  * @brief
@@ -42,4 +59,21 @@ int	**ft_fd_array(int n)
 		n = n + 1;
 	}
 	return (fd);
+}
+
+int	ft_file_opener(int argc, char **argv, int **fd)
+{
+	fd[0][0] = open(argv[1], O_RDONLY);
+	if (fd[0][0] == -1)
+	{
+		ft_free_doubleptr((void **)fd);
+		return (-1);
+	}
+	fd[0][1] = open(argv[argc - 1], (O_TRUNC) | O_RDWR | O_CREAT, 0777);
+	if (fd[0][1] == -1)
+	{
+		ft_free_doubleptr((void **)fd);
+		return (-1);
+	}
+	return (0);
 }

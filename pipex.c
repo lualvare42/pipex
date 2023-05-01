@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 15:35:28 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/27 21:39:34 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 18:30:31 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,12 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	**cmd1;
-	char	**cmd2;
-	pid_t	pid;
-	pid_t	await;
-	int		status;
-
 	if (ft_input_check(argc, argv) == 0)
 		return (0);
-	piper(argc, argv, envp);
+	if (piper(argc, argv, envp) == -1)
+	{
+		perror("");
+		return (0);
+	}
 	return (0);
 }

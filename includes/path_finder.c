@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 15:34:37 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 13:12:16 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:43:43 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	**ft_path_finder(char **envp)
 	char	*start_removed;
 	char	**paths;
 	int		n;
-	int		i;
 	char	*temp;
 
 	index = ft_path_index(envp);
@@ -47,10 +46,6 @@ char	**ft_path_finder(char **envp)
 		n++;
 	}
 	free (start_removed);
-	/*for (i = 0; paths[i]; i++)
-	{
-		ft_printf("%s\n", paths[i]);
-	}*/
 	return (paths);
 }
 
@@ -60,16 +55,17 @@ char	*ft_path_validator(char **envp, char *cmd)
 	char	**paths;
 	int		n;
 
+	if (path_val(cmd, 0) != 0)
+		return (cmd);
 	paths = ft_path_finder(envp);
 	n = 0;
 	while (paths[n])
 	{
 		verified_path = ft_strjoin(paths[n], cmd);
-		if (access(verified_path, F_OK | X_OK) == 0) //here errno is automatically set in case of not finding a valid path
+		if (access(verified_path, F_OK | X_OK) == 0)
 		{
 			ft_free_doubleptr((void **)paths);
 			return (verified_path);
-			//verified_path still needs to be free somewhere
 		}
 		free (verified_path);
 		n++;

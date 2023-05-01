@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:55:33 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 13:08:58 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 14:39:39 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,21 @@ int	ft_files_check(int argc, char **argv)
 	return (1);
 }
 
-int	path_confirm(char *path)
+/**
+ * @brief 
+		path_val checks if a command is given with its respective path.
+ * 
+ * @param path
+ * @param parsing
+		Checks whether path_val is called from parsing step or not.
+		(1): True, perror messages should be displayed.
+		(0): False, perror messages should not be displayed.
+		
+ * @return
+		(1): True, command already given with a valid path.
+		(0): False, command not given with a valid path.
+ */
+int	path_val(char *path, int parsing)
 {
 	char	**path_clean;
 	char	*zsh;
@@ -50,9 +64,12 @@ int	path_confirm(char *path)
 		ft_free_doubleptr((void **)path_clean);
 		return (1);
 	}
-	zsh = ft_strjoin("zsh: ", path);
-	perror(zsh);
-	free(zsh);
+	if (parsing == 1)
+	{
+		zsh = ft_strjoin("zsh: ", path);
+		perror(zsh);
+		free(zsh);
+	}
 	ft_free_doubleptr((void **)path_clean);
 	return (0);
 }
@@ -68,11 +85,11 @@ int	ft_path_check(char **argv)
 		path_given = path_given + 2;
 	if (path_given == 0)
 		return (1);
-	else if (path_given == 3 && path_confirm(argv[2]) && path_confirm(argv[3]))
+	else if (path_given == 3 && path_val(argv[2], 1) && path_val(argv[3], 1))
 		return (1);
-	else if (path_given == 1 && path_confirm(argv[2]))
+	else if (path_given == 1 && path_val(argv[2], 1))
 		return (1);
-	else if (path_given == 2 && path_confirm(argv[3]))
+	else if (path_given == 2 && path_val(argv[3], 1))
 		return (1);
 	return (0);
 }
