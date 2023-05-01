@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 17:27:55 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/26 16:44:35 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:02:41 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ int			ft_abs(int n);
 int			ft_abs_greater(int a, int b);
 int			ft_abs_less(int a, int b);
 void		ft_free_doubleptr(char **ptr);
+int			ft_dbptr_len(char **ptr);
 
 #endif

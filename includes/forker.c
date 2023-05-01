@@ -6,35 +6,63 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:30:23 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/28 16:51:03 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/04/30 19:46:59 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-int	forker(char *raw_cmd, pid_t *pid, char **envp, int *n)
+/*int	forker(char **cmd, pid_t *pid, char **envp, int *n, int *fd)
 {
+	*pid = fork();
+	if (*pid == -1)
+	{
+		*n = -1;
+		return (0);
+	}
+	else if (*pid == 0)
+	{
+		
+		execve(ft_path_validator(envp, cmd[0]), cmd, envp);
+	}
+	return (0);
+}*/
+
+int	forker(char **argv, pid_t *pid, char **envp, int *fd)
+{
+	char	cmd_index;
 	char	**cmd;
 	char	*path;
+	int		error_handle;
 
-	*n = *n + 1;
-	cmd = ft_split(raw_cmd, ' ');
+	cmd_index = *pid;
+	cmd = ft_split(argv[cmd_index], ' ');
 	path = ft_path_validator(envp, cmd[0]);
 	if (path != NULL)
 	{
 		*pid = fork();
 		if (*pid == -1)
 		{
-			*n = -1;
-			return (0);
+			perror("");
+			return (-1);
 		}
 		else if (*pid == 0)
 		{
-			ft_printf("message from child #%d: my number is %d\n", *n, *pid);
+			if (cmd_index == 2)
+				error_handle = ft_first_cmd(argv[1], cmd, envp, fd);
+			else if ((cmd_index + 2) == ft_dbptr_len(argv))
+				error_handle = ft_last_cmd(argv[cmd_index + 1], cmd, envp, fd);
+			/*
+			else
+				ft_n_cmd(cmd, envp, fd);
+			dup2(open(argv[]))
 			execve(ft_path_validator(envp, cmd[0]), cmd, envp);
+			*/
 		}
+		
+		return (error_handle);
 	}
-	return (0);
+	return (-1);
 }
 
 pid_t	*pid_array(int argc)
@@ -44,17 +72,17 @@ pid_t	*pid_array(int argc)
 
 	number_of_cmd = argc - 3;
 	pid_array = (pid_t *) malloc(sizeof(pid_t) * number_of_cmd);
-	if (pid_array == NULL)
+	if (pid_array == 0)
 		return (0);
 	while (number_of_cmd > 0)
 	{
-		pid_array[number_of_cmd - 1] = 0;
+		pid_array[number_of_cmd - 1] = number_of_cmd + 1;
 		number_of_cmd--;
 	}
 	return (pid_array);
 }
 
-int	fork_maker(int argc, char **argv, char **envp, int *rd_wr)
+int	fork_maker(int argc, char **argv, char **envp, int *fd)
 {
 	pid_t	*pid1;
 	int		n;
@@ -62,21 +90,23 @@ int	fork_maker(int argc, char **argv, char **envp, int *rd_wr)
 	int		status;
 
 	n = 0;
-	error_handle = 0;
-	if (pipe(rd_wr) == -1)
-		return (-1);
 	pid1 = pid_array(argc);
-	if (pid1 == NULL)
+	if (pid1 == 0)
 		return (-1);
 	while (n < (argc - 3))
 	{
-		forker(argv[2 + n], &pid1[n], envp, &error_handle);
-		waitpid(pid1[n], &status, 0);
-		if (error_handle == -1)
+		if (forker(argv, &pid1[n], envp, fd) == -1)
 			return (-1);
-		ft_printf("Parent my child #%d id is %d\n", error_handle, pid1[n]);
+		if ((n + 1) == (argc - 3))
+		{
+			close(fd[0]);
+			close(fd[1]);
+		}
+		waitpid(pid1[n], &status, 0);
+		ft_printf("Parent my child #%d id is %d\n", pid1[n]);
 		n++;
 	}
+	write(5, "test", ft_strlen("test"));
 	return (0);
 }
 
@@ -84,9 +114,14 @@ int	piper(int argc, char **argv, char **envp)
 {
 	int	fd[2];
 
-	pipe(fd);
-	fork_maker(argc, argv, envp, rd_wr);
+	if (pipe(fd) == -1)
+		return (-1);
+	fork_maker(argc, argv, envp, fd);
+	return (0);
 }
+
+//I need to handle any possible error
+
 /*
 void	fork_maker(int argc, char **argv, char **envp)
 {
