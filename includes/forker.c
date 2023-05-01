@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:30:23 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/30 19:46:59 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 13:42:36 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@
 	return (0);
 }*/
 
-int	forker(char **argv, pid_t *pid, char **envp, int *fd)
+int	forker(char **argv, pid_t *pid, char **envp, int **fd)
 {
 	char	cmd_index;
 	char	**cmd;
 	char	*path;
 	int		error_handle;
+	//int		status;
+	//int		file_fd;
 
 	cmd_index = *pid;
 	cmd = ft_split(argv[cmd_index], ' ');
@@ -42,24 +44,20 @@ int	forker(char **argv, pid_t *pid, char **envp, int *fd)
 	{
 		*pid = fork();
 		if (*pid == -1)
-		{
-			perror("");
 			return (-1);
-		}
 		else if (*pid == 0)
 		{
 			if (cmd_index == 2)
-				error_handle = ft_first_cmd(argv[1], cmd, envp, fd);
+				error_handle = ft_first_cmd(cmd, envp, fd);
 			else if ((cmd_index + 2) == ft_dbptr_len(argv))
-				error_handle = ft_last_cmd(argv[cmd_index + 1], cmd, envp, fd);
+				error_handle = ft_last_cmd(cmd, envp, fd);
 			/*
 			else
 				ft_n_cmd(cmd, envp, fd);
-			dup2(open(argv[]))
-			execve(ft_path_validator(envp, cmd[0]), cmd, envp);
 			*/
 		}
-		
+		//waitpid(*pid, &status, 0);
+		//ft_printf("Does it read this? if so, which process? %d\n", *pid);
 		return (error_handle);
 	}
 	return (-1);
@@ -82,14 +80,14 @@ pid_t	*pid_array(int argc)
 	return (pid_array);
 }
 
-int	fork_maker(int argc, char **argv, char **envp, int *fd)
+int	fork_maker(int argc, char **argv, char **envp, int **fd)
 {
 	pid_t	*pid1;
 	int		n;
-	int		error_handle;
 	int		status;
 
 	n = 0;
+	ft_printf("check fd file1 %d && fd file2 %d\n", fd[0][0], fd[0][1]);
 	pid1 = pid_array(argc);
 	if (pid1 == 0)
 		return (-1);
@@ -99,24 +97,52 @@ int	fork_maker(int argc, char **argv, char **envp, int *fd)
 			return (-1);
 		if ((n + 1) == (argc - 3))
 		{
-			close(fd[0]);
-			close(fd[1]);
+			close(fd[1][0]);
+			close(fd[1][1]);
+			close(fd[0][0]);
+			close(fd[0][1]);
 		}
 		waitpid(pid1[n], &status, 0);
-		ft_printf("Parent my child #%d id is %d\n", pid1[n]);
+		ft_printf("Parent my child #%d\n", pid1[n]);
 		n++;
 	}
-	write(5, "test", ft_strlen("test"));
 	return (0);
 }
 
+/**
+ * @brief 
+ * 
+ * @param fd
+		2D array used for storing required fd's for pipex.
+			- fd[0]: fd's for file managing
+				f[0][0] --> file1
+				f[0][1] --> file2
+			- fd[1]: fd's for pipe managing
+				f[1][0] --> pipe's read end
+				f[1][1] --> pipe's write end
+ * @return int 
+ */
+
 int	piper(int argc, char **argv, char **envp)
 {
-	int	fd[2];
+	int	**fd;
+	int	n;
 
-	if (pipe(fd) == -1)
+	fd = ft_fd_array(0);
+	if (fd == 0)
 		return (-1);
-	fork_maker(argc, argv, envp, fd);
+	fd[0][0] = open(argv[1], O_RDONLY);
+	if (fd[0][0] == -1)
+		return (-1);
+	fd[0][1] = open(argv[argc - 1], (O_TRUNC) | O_RDWR | O_CREAT, 0777);
+	if (fd[0][1] == -1)
+		return (-1);
+	ft_printf("check fd file1 %d && fd file2 %d\n", fd[0][0], fd[0][1]);
+	if (pipe(fd[1]) == -1)
+		return (-1);
+	if (fork_maker(argc, argv, envp, fd) == -1)
+		return (-1);
+	ft_printf("is it close? %d", write(fd[0][1], "test", ft_strlen("test")));
 	return (0);
 }
 
