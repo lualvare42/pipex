@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_doubleptr.c                                :+:      :+:    :+:   */
+/*   ft_dbptr_len.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/25 18:07:50 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 13:06:28 by lualvare         ###   ########.fr       */
+/*   Created: 2023/04/28 19:00:25 by lualvare          #+#    #+#             */
+/*   Updated: 2023/04/28 19:01:44 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_free_doubleptr(void **ptr)
+int	ft_dbptr_len(char **ptr)
 {
 	int	n;
 
 	n = 0;
 	while (ptr[n])
 	{
-		free(ptr[n]);
 		n++;
 	}
-	free(ptr);
+	return (n);
 }

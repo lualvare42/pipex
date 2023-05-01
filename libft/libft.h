@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 17:27:55 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/26 16:44:35 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 13:06:54 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ long long	ft_latoi_index(char *str, int *n);
 int			ft_abs(int n);
 int			ft_abs_greater(int a, int b);
 int			ft_abs_less(int a, int b);
-void		ft_free_doubleptr(char **ptr);
+void		ft_free_doubleptr(void **ptr);
+int			ft_dbptr_len(char **ptr);
 
 #endif

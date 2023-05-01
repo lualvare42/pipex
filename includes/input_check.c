@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:55:33 by lualvare          #+#    #+#             */
-/*   Updated: 2023/04/27 15:52:28 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 13:08:58 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	ft_files_check(int argc, char **argv)
 		free (zsh);
 		return (0);
 	}
-	//write(fd2, "A new test", 10);
-	//ft_printf("%s", argv[1]);
+	close(fd1);
+	close(fd2);
 	return (1);
 }
 
@@ -47,13 +47,13 @@ int	path_confirm(char *path)
 	path_clean = ft_split(path, ' ');
 	if (access(path_clean[0], F_OK | X_OK) == 0)
 	{
-		ft_free_doubleptr(path_clean);
+		ft_free_doubleptr((void **)path_clean);
 		return (1);
 	}
 	zsh = ft_strjoin("zsh: ", path);
 	perror(zsh);
 	free(zsh);
-	ft_free_doubleptr(path_clean);
+	ft_free_doubleptr((void **)path_clean);
 	return (0);
 }
 
