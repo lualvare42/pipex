@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 15:29:00 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 15:08:13 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/02 10:59:31 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int		**ft_fd_array(int n);
 pid_t	*pid_array(int argc);
 int		path_val(char *path, int parsing);
 int		ft_file_opener(int argc, char **argv, int **fd);
-
-
+int		ft_file_closer(int **fd);
 
 #endif

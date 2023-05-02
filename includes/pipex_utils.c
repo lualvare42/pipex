@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 12:28:12 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 15:07:52 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/02 11:12:42 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,31 @@ int	**ft_fd_array(int n)
 		n = n + 1;
 	}
 	return (fd);
+}
+
+int	ft_file_closer(int **fd)
+{
+	if (close(fd[1][0]) == -1)
+	{
+		ft_free_doubleptr((void **)fd);
+		return (-1);
+	}
+	if (close(fd[1][1]) == -1)
+	{
+		ft_free_doubleptr((void **)fd);
+		return (-1);
+	}
+	if (close(fd[0][0]) == -1)
+	{
+		ft_free_doubleptr((void **)fd);
+		return (-1);
+	}
+	if (close(fd[0][1]) == -1)
+	{
+		ft_free_doubleptr((void **)fd);
+		return (-1);
+	}
+	return (0);
 }
 
 int	ft_file_opener(int argc, char **argv, int **fd)

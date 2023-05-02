@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 18:39:22 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 15:41:45 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 19:08:25 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_first_cmd(char **cmd, char **envp, int **fd)
 {
-	ft_printf("Hi child 1 here starting process file1 fd %d\n", fd[0][0]);
+	//ft_printf("Hi child 1 here starting process file1 fd %d\n", fd[0][0]);
 	dup2(fd[0][0], 0);
 	dup2(fd[1][1], 1);
 	close(fd[1][0]);
@@ -25,7 +25,7 @@ int	ft_first_cmd(char **cmd, char **envp, int **fd)
 
 int	ft_last_cmd(char **cmd, char **envp, int **fd)
 {
-	ft_printf("Hi child 2 here starting process file2 fd %d\n", fd[0][1]);
+	//ft_printf("Hi child 2 here starting process file2 fd %d\n", fd[0][1]);
 	dup2(fd[1][0], 0);
 	dup2(fd[0][1], 1);
 	close(fd[1][0]);

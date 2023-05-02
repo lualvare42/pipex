@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:55:33 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 14:39:39 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/01 19:20:26 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_files_check(int argc, char **argv)
 		free (zsh);
 		return (0);
 	}
-	fd2 = open(argv[4], (O_TRUNC) | O_RDWR | O_CREAT, 0777);
+	fd2 = open(argv[4], (O_TRUNC) | O_RDWR | O_CREAT, 0644);
 	if (fd2 == -1)
 	{
 		zsh = ft_strjoin("zsh: ", argv[4]);

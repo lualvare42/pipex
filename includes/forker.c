@@ -6,7 +6,7 @@
 /*   By: lualvare <lualvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:30:23 by lualvare          #+#    #+#             */
-/*   Updated: 2023/05/01 15:41:57 by lualvare         ###   ########.fr       */
+/*   Updated: 2023/05/02 11:14:02 by lualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	fork_maker(int argc, char **argv, char **envp, int **fd)
 	int		status;
 
 	n = 0;
-	ft_printf("check fd file1 %d && fd file2 %d\n", fd[0][0], fd[0][1]);
+	//ft_printf("check fd file1 %d && fd file2 %d\n", fd[0][0], fd[0][1]);
 	pid1 = pid_array(argc);
 	if (pid1 == 0)
 		return (-1);
@@ -76,13 +76,15 @@ int	fork_maker(int argc, char **argv, char **envp, int **fd)
 			return (-1);
 		if ((n + 1) == (argc - 3))
 		{
-			close(fd[1][0]);
-			close(fd[1][1]);
-			close(fd[0][0]);
-			close(fd[0][1]);
+			if (ft_file_closer(fd) == -1)
+				return (-1);
 		}
-		waitpid(pid1[n], &status, 0);
-		ft_printf("Parent my child #%d\n", pid1[n]);
+		if (n != 0)
+		{
+			waitpid(pid1[n - 1], &status, 0);
+			waitpid(pid1[n], &status, 0);
+		}
+		//ft_printf("Parent my child #%d\n", pid1[n]);
 		n++;
 	}
 	free (pid1);
@@ -113,7 +115,7 @@ int	piper(int argc, char **argv, char **envp)
 		return (-1);
 	if (ft_file_opener(argc, argv, fd) == -1)
 		return (-1);
-	ft_printf("check fd file1 %d && fd file2 %d\n", fd[0][0], fd[0][1]);
+	//ft_printf("check fd file1 %d && fd file2 %d\n", fd[0][0], fd[0][1]);
 	if (pipe(fd[1]) == -1)
 	{
 		ft_free_doubleptr((void **)fd);
@@ -121,7 +123,7 @@ int	piper(int argc, char **argv, char **envp)
 	}
 	if (fork_maker(argc, argv, envp, fd) == -1)
 		return (-1);
-	ft_printf("is it close? %d", write(fd[0][1], "test", ft_strlen("test")));
+	//ft_printf("is it close? %d", write(fd[0][1], "test", ft_strlen("test")));
 	return (0);
 }
 
